@@ -18,3 +18,5 @@ Book list as follows:
 
 + *Dive into Rust*
 
++ *C++ concurrency in action*
+

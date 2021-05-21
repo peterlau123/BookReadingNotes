@@ -12,7 +12,7 @@
 
 类Test如下所示
 
-'''c++
+```c++
 class Test{
 
 public:
@@ -22,11 +22,11 @@ public:
     void method_two(){
     }
 };
-'''
+```
 
 第一种解决方案：
 
-'''c++
+```c++
 class P1{
    virtual void func(int)=0;
 };
@@ -40,14 +40,15 @@ private:
     P1* p1_;
     P2* p2_;
 }
-'''
+```
+
 将两类方法分别变成基类**P1**和**P2**，然后各个实现方法变成子类，分别实现对应的虚函数；
 
 在**Test**内部，则使用基类指针在运行时进行动态分发，选择对应的实现
 
 第二种解决方案：
 
-'''c++
+```c++
 class Test{
 
 public:
@@ -63,7 +64,7 @@ priveta:
    std::function<void(int)>p1;
    std::function<void(int,double)>p2;
 }
-'''
+```
 
 此种主要是利用函数对象，将*method_one*和*method_two*的多种对应实现用**function object**来抽象剥离出来；
 
@@ -76,13 +77,13 @@ priveta:
 
 第三种解决方案：
 
-'''c++
+```c++
 template<typename PolicyOne,typename PolicyTwo>
 class Test:public PolicyOne,PolicyTwo{
 }
 
 typedef Test<P1,P2> test;//P1和P2分别对应PolicyOne和PolicyTwo的实现方法之一
-'''
+```
 
 
 这三种解决方案都可以达到目的：
@@ -94,7 +95,7 @@ typedef Test<P1,P2> test;//P1和P2分别对应PolicyOne和PolicyTwo的实现方�
 第三种方案基于策略类，将每种实现方式抽象为一个策略类，通过模板实例化，在编译期就可以知道具体选择了哪种实现方法
 
 同时各个策略类可以进一步泛化，如下：
-'''
+```
 template <typename T>
 class P1{
 };
@@ -106,7 +107,7 @@ class P2{
 template <typename T1,typename T2,template<class>class PolicyOne,template<class>class PolicyTwo>
 class Test:public PolicyOne<T1>,PolicyTwo<T2>{
 };
-'''
+```
 
 也就是说，依靠模板可以进一步泛化
 
